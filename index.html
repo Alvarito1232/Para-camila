@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Te Amo - Matrix Romántico Optimizado</title>
+    <title>Feliz Aniversario mi Karim ❤️</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body, html { 
@@ -13,12 +13,122 @@
             background: #000000; 
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; 
         }
-        canvas { display: block; width: 100%; height: 100%; }
+        canvas { display: block; width: 100%; height: 100%; position: absolute; top: 0; left: 0; z-index: 1; }
+
+        /* Contenedor central interactivo */
+        #contenedorCentro {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 10;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 90%;
+            max-width: 420px;
+            text-align: center;
+        }
+
+        /* Botón de Presionar */
+        #btnPresionar {
+            background: linear-gradient(135deg, #ff1493, #ff69b4);
+            color: #ffffff;
+            border: none;
+            padding: 14px 32px;
+            font-size: 20px;
+            font-weight: bold;
+            border-radius: 30px;
+            cursor: pointer;
+            box-shadow: 0 0 25px rgba(255, 20, 147, 0.6);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            outline: none;
+            animation: latido 1.5s infinite;
+        }
+        #btnPresionar:active { transform: scale(0.95); }
+
+        @keyframes latido {
+            0% { transform: scale(1); box-shadow: 0 0 20px rgba(255, 20, 147, 0.5); }
+            50% { transform: scale(1.06); box-shadow: 0 0 35px rgba(255, 20, 147, 0.9); }
+            100% { transform: scale(1); box-shadow: 0 0 20px rgba(255, 20, 147, 0.5); }
+        }
+
+        /* Cuadros de mensajes / Carta Romántica */
+        .tarjetaMensaje {
+            display: none;
+            background: rgba(15, 15, 15, 0.92);
+            backdrop-filter: blur(12px);
+            border: 2px solid rgba(255, 105, 180, 0.4);
+            padding: 25px 20px;
+            border-radius: 20px;
+            color: #ffffff;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.8), 0 0 20px rgba(255, 105, 180, 0.3);
+            max-height: 80vh;
+            overflow-y: auto;
+            animation: aparecer 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+        }
+
+        @keyframes aparecer {
+            from { opacity: 0; transform: scale(0.8) translateY(20px); }
+            to { opacity: 1; transform: scale(1) translateY(0); }
+        }
+
+        .tarjetaMensaje h2 {
+            color: #ff69b4;
+            font-size: 22px;
+            margin-bottom: 12px;
+            text-shadow: 0 0 10px rgba(255, 105, 180, 0.5);
+        }
+
+        .tarjetaMensaje p {
+            font-size: 14.5px;
+            line-height: 1.6;
+            color: #f1f1f1;
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        .btnSiguiente {
+            background: #ff1493;
+            color: white;
+            border: none;
+            padding: 10px 24px;
+            font-size: 15px;
+            font-weight: bold;
+            border-radius: 15px;
+            cursor: pointer;
+            box-shadow: 0 0 10px rgba(255, 20, 147, 0.4);
+            transition: background 0.2s;
+        }
+        .btnSiguiente:hover { background: #ff69b4; }
     </style>
 </head>
 <body>
 
     <canvas id="canvasMatrix"></canvas>
+
+    <div id="contenedorCentro">
+        <button id="btnPresionar" onclick="mostrarPaso1()">Presionar ❤️</button>
+
+        <div id="cuadro1" class="tarjetaMensaje">
+            <h2>¡Feliz Aniversario, mi amor!</h2>
+            <p style="text-align: center; font-size: 17px; font-weight: bold; color: #ff94b8;">Feliz 1, mi Karim. Te lo dedico con todo mi amor y ser. ❤️</p>
+            <button class="btnSiguiente" onclick="mostrarPaso2()">Continuar ⚓️</button>
+        </div>
+
+        <div id="cuadro2" class="tarjetaMensaje">
+            <h2>Para ti, con todo mi amor</h2>
+            <p>
+                Feliz aniversario, mi amor, mi Karim ❤️. Hoy, como cada 1 de cada mes, quiero agradecer por tenerte en mi vida y por todos los momentos tan bonitos que hemos compartido.<br><br>
+                Sé que pronto te irás de viaje y voy a extrañarte muchísimo, pero quiero que te lleves contigo la certeza de que aquí habrá alguien que estará pensando en ti y esperando tu regreso. 🥺❤️<br><br>
+                Admiro mucho al hombre que eres, tu valentía, tu dedicación y la pasión con la que haces lo que amas. Como marino, tendrás que estar lejos y enfrentar nuevos caminos, pero quiero que recuerdes que, aunque el mar nos separe, mi amor siempre encontrará la manera de llegar hasta ti. ⚓️🌊❤️<br><br>
+                Cuídate mucho por mí, mi amor. Deseo que cada viaje sea seguro y que regreses con muchas historias para contarme y muchos abrazos que darme. Ojalá podamos celebrar juntos muchísimos 1 de cada mes, porque quiero seguir construyendo recuerdos contigo.<br><br>
+                Te quiero muchísimo, Karim. ❤️ Gracias por ser tú, por llegar a mi vida y por hacerme sentir tan especial. No importa qué tan lejos estés, siempre tendrás un lugar en mi corazón. ¡Feliz aniversario, mi amor! ❤️⚓️🌊
+            </p>
+            <button class="btnSiguiente" onclick="reiniciarCarta()">Volver 💌</button>
+        </div>
+    </div>
 
     <script>
         const canvas = document.getElementById('canvasMatrix');
@@ -33,7 +143,23 @@
         ajustarCanvas();
         window.addEventListener('resize', ajustarCanvas);
 
-        // Clase para corazones flotantes optimizados y más abundantes
+        // Funciones para alternar los cuadros de texto
+        function mostrarPaso1() {
+            document.getElementById('btnPresionar').style.display = 'none';
+            document.getElementById('cuadro1').style.display = 'block';
+        }
+
+        function mostrarPaso2() {
+            document.getElementById('cuadro1').style.display = 'none';
+            document.getElementById('cuadro2').style.display = 'block';
+        }
+
+        function reiniciarCarta() {
+            document.getElementById('cuadro2').style.display = 'none';
+            document.getElementById('btnPresionar').style.display = 'block';
+        }
+
+        // Corazones flotantes
         class CorazonFlotante {
             constructor() {
                 this.reiniciar();
@@ -60,7 +186,6 @@
                 ctx.shadowBlur = 12;
                 ctx.shadowColor = '#ff69b4';
                 
-                // Dibujar forma de corazón suave
                 ctx.beginPath();
                 let t = this.tamano;
                 ctx.moveTo(0, t / 4);
@@ -71,19 +196,18 @@
             }
         }
 
-        // Crear una buena cantidad de corazones para que luzca lleno
         let corazones = [];
         const cantidadCorazones = Math.floor(window.innerWidth < 600 ? 35 : 55);
         for (let i = 0; i < cantidadCorazones; i++) {
             let c = new CorazonFlotante();
-            c.y = Math.random() * window.innerHeight; // Distribuidos desde el inicio
+            c.y = Math.random() * window.innerHeight;
             corazones.push(c);
         }
 
-        // Configuración Matrix ultradensa adaptada para celulares y PC
+        // Lluvia Matrix optimizada con velocidad ligeramente aumentada
         const esCelular = window.innerWidth < 600;
-        const espacioX = esCelular ? 75 : 95; // Columnas mucho más juntas para eliminar espacios negros
-        const espacioY = 28;  // Espaciado vertical más compacto
+        const espacioX = esCelular ? 75 : 95;
+        const espacioY = 28;
         let columnas = [];
 
         function inicializarColumnas() {
@@ -93,33 +217,30 @@
                 columnas.push({
                     x: c * espacioX,
                     y: Math.random() * window.innerHeight - window.innerHeight,
-                    longitudBloque: 40 // Tiras largas sin baches
+                    longitudBloque: 40
                 });
             }
         }
         inicializarColumnas();
         window.addEventListener('resize', inicializarColumnas);
 
-        let tonoMatiz = 330; // Mantiene el tono rosado/fucsia elegante con transición suave
+        let tonoMatiz = 330;
 
         function animar() {
             ctx.fillStyle = '#000000';
             ctx.fillRect(0, 0, window.innerWidth, window.innerHeight);
 
-            // Transición suave de color fluida
-            tonoMatiz += 0.2;
+            tonoMatiz += 0.25;
             if (tonoMatiz > 360) tonoMatiz = 0;
             const colorDinamico = `hsl(${tonoMatiz}, 100%, 70%)`;
 
             const textoFondo = "Te Amo";
-            const velocidadBase = 2.4; // Velocidad fluida y agradable
+            const velocidadBase = 3.0; // Velocidad un poquito más rápida como pediste
 
-            // Definir fuente nítida según pantalla
             const tamanoFuenteTexto = esCelular ? 17 : 20;
             ctx.font = `bold ${tamanoFuenteTexto}px sans-serif`;
             ctx.textBaseline = 'top';
 
-            // Dibujar lluvia de palabras Matrix densa y nítida
             for (let col of columnas) {
                 col.y += velocidadBase;
 
@@ -131,7 +252,6 @@
                     let posY = col.y + (i * espacioY);
 
                     if (posY > -40 && posY < window.innerHeight + 40) {
-                        // La primera palabra de la columna brilla más nítida (cabeza de matrix)
                         if (i === 0) {
                             ctx.fillStyle = '#ffffff';
                             ctx.globalAlpha = 0.95;
@@ -147,23 +267,10 @@
                 }
             }
 
-            // Dibujar y actualizar corazones flotantes
             for (let corazon of corazones) {
                 corazon.actualizar();
                 corazon.dibujar();
             }
-
-            // Frase central fija y hermosa: "Te Amo ❤️"
-            ctx.globalAlpha = 1.0;
-            let tamanoCentral = Math.min(window.innerWidth / 7, 48);
-            ctx.font = `bold ${tamanoCentral}px sans-serif`;
-            ctx.textAlign = 'center';
-            ctx.textBaseline = 'middle';
-            ctx.shadowBlur = 20;
-            ctx.shadowColor = colorDinamico;
-            ctx.fillStyle = '#ffffff';
-
-            ctx.fillText("Te Amo ❤️", window.innerWidth / 2, window.innerHeight / 2);
 
             requestAnimationFrame(animar);
         }

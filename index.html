@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Efecto Romántico - TikTok Idéntico</title>
+    <title>Efecto Romántico - Cascada Exacta</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body, html { width: 100%; height: 100%; overflow: hidden; background: #000000; font-family: 'Segoe UI', Roboto, sans-serif; }
@@ -34,13 +34,12 @@
                 this.y = y;
                 this.color = color;
                 this.radio = 0;
-                this.radioMax = 70;
                 this.alpha = 1;
             }
 
             actualizar() {
-                this.radio += 2;
-                this.alpha -= 0.02;
+                this.radio += 2.2;
+                this.alpha -= 0.022;
             }
 
             dibujar() {
@@ -50,14 +49,14 @@
                 ctx.strokeStyle = this.color;
                 ctx.globalAlpha = this.alpha;
                 ctx.lineWidth = 2;
-                ctx.shadowBlur = 12;
+                ctx.shadowBlur = 10;
                 ctx.shadowColor = this.color;
 
-                const rayos = 22;
+                const rayos = 20;
                 for (let i = 0; i < rayos; i++) {
                     const angulo = (i * 2 * Math.PI) / rayos;
                     ctx.beginPath();
-                    ctx.moveTo(Math.cos(angulo) * 10, Math.sin(angulo) * 10);
+                    ctx.moveTo(Math.cos(angulo) * 8, Math.sin(angulo) * 8);
                     ctx.lineTo(Math.cos(angulo) * this.radio, Math.sin(angulo) * this.radio);
                     ctx.stroke();
                 }
@@ -69,7 +68,7 @@
         let tiempoInicio = Date.now();
         let modoVerde = false;
 
-        // Estallidos de fuegos artificiales intermitentes
+        // Generar fuegos artificiales intermitentes
         setInterval(() => {
             if (fuegos.length < 3) {
                 const rx = Math.random() * (window.innerWidth - 150) + 75;
@@ -77,13 +76,33 @@
                 const colorFuego = modoVerde ? '#00e676' : '#ff1744';
                 fuegos.push(new FuegoArtificial(rx, ry, colorFuego));
             }
-        }, 1400);
+        }, 1300);
+
+        // Configuración de las columnas de texto cayendo en cascada exacta
+        const espacioX = 110; // Distancia horizontal entre columnas
+        const espacioY = 24;  // Altura entre cada palabra "My Love"
+        let columnas = [];
+
+        function inicializarColumnas() {
+            columnas = [];
+            const totalCols = Math.ceil(window.innerWidth / espacioX) + 2;
+            for (let c = 0; c < totalCols; c++) {
+                columnas.push({
+                    x: c * espacioX,
+                    y: (Math.random() * -800) - 100, // Posición inicial aleatoria arriba fuera de pantalla
+                    velocidad: 1.8 + (Math.random() * 0.6), // Velocidad uniforme estilo x1
+                    longitudBloque: 18 // Cantidad de palabras que conforman la tira vertical
+                });
+            }
+        }
+        inicializarColumnas();
+        window.addEventListener('resize', inicializarColumnas);
 
         function animar() {
             ctx.fillStyle = '#000000';
             ctx.fillRect(0, 0, window.innerWidth, window.innerHeight);
 
-            // A los 7 segundos exactos cambia al color verde (como en el video)
+            // A los 7 segundos exactos cambia al color verde (como se ve en el video)
             let tiempoTranscurrido = Date.now() - tiempoInicio;
             if (tiempoTranscurrido > 7000) {
                 modoVerde = true;
@@ -92,40 +111,40 @@
             const colorActual = modoVerde ? '#00e676' : '#ff1744';
             const textoFondo = "My Love";
 
-            ctx.font = 'bold 14px sans-serif';
+            ctx.font = 'bold 13px sans-serif';
             ctx.textBaseline = 'top';
 
-            const espacioY = 22;  // Filas más juntas y continuas como el video
-            const espacioX = 95;   // Columnas más cercanas
-            const columnasTotales = Math.ceil(window.innerWidth / espacioX) + 2;
-            const filasPorColumna = Math.ceil(window.innerHeight / espacioY) + 4;
+            // Actualizar y dibujar cada columna de forma independiente (crea los espacios negros y la cascada perfecta)
+            for (let col of columnas) {
+                col.y += col.velocidad;
 
-            // Dibujar cada columna con su propio desplazamiento vertical independiente (efecto cascada fluido)
-            let tiempoActual = Date.now() * 0.04; // Velocidad x1 suave
+                // Si la columna pasa por completo la pantalla, se reinicia arriba con un espacio aleatorio
+                if (col.y > window.innerHeight + 100) {
+                    col.y = - (col.longitudBloque * espacioY) - (Math.random() * 400);
+                    col.velocidad = 1.8 + (Math.random() * 0.6);
+                }
 
-            for (let c = 0; c < columnasTotales; c++) {
-                let posX = c * espacioX;
-                // Cada columna cae a una velocidad ligeramente distinta o desfasada
-                let offsetColumna = (c * 45) + (tiempoActual * (1.2 + (c % 3) * 0.2));
+                for (let i = 0; i < col.longitudBloque; i++) {
+                    let posY = col.y + (i * espacioY);
 
-                for (let f = 0; f < filasPorColumna; f++) {
-                    let posY = (f * espacioY) + (offsetColumna % (filasPorColumna * espacioY)) - espacioY;
-
-                    ctx.fillStyle = colorActual;
-                    ctx.globalAlpha = 0.5;
-                    ctx.shadowBlur = 4;
-                    ctx.shadowColor = colorActual;
-                    ctx.fillText(textoFondo, posX, posY);
+                    // Solo renderizar si está dentro del área visible para mantener fluidez
+                    if (posY > -50 && posY < window.innerHeight + 50) {
+                        ctx.fillStyle = colorActual;
+                        ctx.globalAlpha = 0.55;
+                        ctx.shadowBlur = 5;
+                        ctx.shadowColor = colorActual;
+                        ctx.fillText(textoFondo, col.x, posY);
+                    }
                 }
             }
 
-            // Texto central estático con la frase e icono del video: "I Love You! ❤️"
+            // Frase central fija: "I Love You! ❤️"
             ctx.globalAlpha = 1.0;
             let tamanoTexto = Math.min(window.innerWidth / 8, 52);
             ctx.font = `bold ${tamanoTexto}px sans-serif`;
             ctx.textAlign = 'center';
             ctx.textBaseline = 'middle';
-            ctx.shadowBlur = 20;
+            ctx.shadowBlur = 22;
             ctx.shadowColor = colorActual;
             ctx.fillStyle = '#ffffff';
 

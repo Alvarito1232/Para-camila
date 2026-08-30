@@ -10,7 +10,6 @@
 
         canvas { display: block; width: 100%; height: 100%; }
 
-        /* Panel de control flotante idéntico al del video */
         #panel-control {
             position: absolute;
             top: 15px;
@@ -78,10 +77,10 @@
     <div id="panel-control">
         <div class="control-grupo">
             <label>Velocidad</label>
-            <input type="range" id="inputVelocidad" min="0.5" max="3" step="0.1" value="1">
+            <input type="range" id="inputVelocidad" min="1" max="8" step="0.5" value="4">
         </div>
         <div class="control-grupo">
-            <label>Color</label>
+            <label>Color Centro</label>
             <input type="color" id="inputColor" value="#ff1744">
         </div>
         <div class="control-grupo">
@@ -96,12 +95,10 @@
         const canvas = document.getElementById('canvasTikTok');
         const ctx = canvas.getContext('2d');
 
-        // Inputs del panel
         const inputVelocidad = document.getElementById('inputVelocidad');
         const inputColor = document.getElementById('inputColor');
         const inputTexto = document.getElementById('inputTexto');
 
-        // Configuración de Alta Definición (Retina / Celular HD)
         function ajustarCanvas() {
             const dpr = window.devicePixelRatio || 1;
             canvas.width = window.innerWidth * dpr;
@@ -111,23 +108,22 @@
         ajustarCanvas();
         window.addEventListener('resize', ajustarCanvas);
 
-        // Clase para las explosiones de partículas (fuegos artificiales/destellos)
         class Explosion {
             constructor(x, y, color) {
                 this.x = x;
                 this.y = y;
                 this.color = color;
                 this.particulas = [];
-                for (let i = 0; i < 35; i++) {
+                for (let i = 0; i < 40; i++) {
                     const angulo = Math.random() * Math.PI * 2;
-                    const velocidad = Math.random() * 4 + 1;
+                    const velocidad = Math.random() * 6 + 2;
                     this.particulas.push({
                         x: 0,
                         y: 0,
                         vx: Math.cos(angulo) * velocidad,
                         vy: Math.sin(angulo) * velocidad,
                         alpha: 1,
-                        decend: Math.random() * 0.02 + 0.015
+                        decend: Math.random() * 0.025 + 0.015
                     });
                 }
             }
@@ -147,10 +143,10 @@
                     if (p.alpha <= 0) continue;
                     ctx.fillStyle = this.color;
                     ctx.globalAlpha = p.alpha;
-                    ctx.shadowBlur = 10;
+                    ctx.shadowBlur = 12;
                     ctx.shadowColor = this.color;
                     ctx.beginPath();
-                    ctx.arc(p.x, p.y, 2.5, 0, Math.PI * 2);
+                    ctx.arc(p.x, p.y, 3, 0, Math.PI * 2);
                     ctx.fill();
                 }
                 ctx.restore();
@@ -159,67 +155,73 @@
 
         let explosiones = [];
         let desplazamientoY = 0;
+        let tonoColor = 0; // Para hacer la transición cíclica entre rojo, verde, etc.
 
-        // Generar una explosión aleatoria de vez en cuando
         setInterval(() => {
-            if (explosiones.length < 5) {
+            if (explosiones.length < 6) {
                 const rx = Math.random() * window.innerWidth;
                 const ry = Math.random() * window.innerHeight;
-                explosiones.push(new Explosion(rx, ry, inputColor.value));
+                // Colores aleatorios para las explosiones (rojo, verde, rosa)
+                const coloresEx = ['#ff1744', '#00e676', '#ff4081', '#ffffff'];
+                const colAleatorio = coloresEx[Math.floor(Math.random() * coloresEx.length)];
+                explosiones.push(new Explosion(rx, ry, colAleatorio));
             }
-        }, 1200);
+        }, 800);
 
         function animar() {
             ctx.fillStyle = '#000000';
             ctx.fillRect(0, 0, window.innerWidth, window.innerHeight);
 
-            // Obtener valores actuales de los controles
-            const velocidad = parseFloat(inputVelocidad.value);
-            const colorActual = inputColor.value;
+            const velocidadInput = parseFloat(inputVelocidad.value);
+            const colorCentro = inputColor.value;
             const textoActual = inputTexto.value || "Te Amo";
 
-            desplazamientoY += 1.2 * velocidad;
-            if (desplazamientoY > 40) desplazamientoY = 0;
+            // Velocidad de desplazamiento rápida como en el video
+            desplazamientoY += 3.5 * velocidadInput;
+            if (desplazamientoY > 50) desplazamientoY = 0;
 
-            // Dibujar el fondo masivo de texto repetido en líneas diagonales/verticales
-            ctx.font = 'bold 15px sans-serif';
+            // Transición automática de color para el fondo (Cambia de rojo a verde y otros)
+            tonoColor += 1.5 * velocidadInput;
+            
+            ctx.font = 'bold 14px sans-serif';
             ctx.textBaseline = 'top';
 
-            const espacioY = 35;
-            const espacioX = 140;
-            const filasTotales = Math.ceil(window.innerHeight / espacioY) + 3;
+            const espacioY = 30;
+            const espacioX = 130;
+            const filasTotales = Math.ceil(window.innerHeight / espacioY) + 4;
             const columnasTotales = Math.ceil(window.innerWidth / espacioX) + 2;
-
-            ctx.shadowBlur = 4;
-            ctx.shadowColor = colorActual;
 
             for (let f = -1; f < filasTotales; f++) {
                 let posY = (f * espacioY) + desplazamientoY - espacioY;
-                
-                // Desplazamiento alternado por fila para darle el efecto del video
-                let desplazamientoFila = (f % 2 === 0) ? 0 : 45;
+                let desplazamientoFila = (f % 2 === 0) ? 0 : 40;
 
                 for (let c = 0; c < columnasTotales; c++) {
                     let posX = (c * espacioX) + desplazamientoFila;
 
-                    // Atenuar un poco las líneas de fondo para que luzcan elegantes
-                    ctx.fillStyle = colorActual;
-                    ctx.globalAlpha = 0.35;
+                    // Cada columna/fila tiene un color dinámico basado en su posición y el tiempo (Rojo ➔ Verde ➔ Rosa)
+                    let hueColumna = (tonoColor + (c * 15) + (f * 10)) % 360;
+                    // HSL permite alternar perfectamente entre rojos (~0) y verdes (~120)
+                    let colorDinamicoFondo = `hsl(${hueColumna}, 90%, 55%)`;
+
+                    ctx.fillStyle = colorDinamicoFondo;
+                    ctx.globalAlpha = 0.45;
+                    ctx.shadowBlur = 6;
+                    ctx.shadowColor = colorDinamicoFondo;
                     ctx.fillText(textoActual, posX, posY);
                 }
             }
 
-            // Frase principal destacada en el centro (con brillo intenso)
+            // Frase principal destacada en el centro
             ctx.globalAlpha = 1.0;
             ctx.font = `bold ${Math.min(window.innerWidth / 8, 55)}px sans-serif`;
             ctx.textAlign = 'center';
             ctx.textBaseline = 'middle';
             ctx.shadowBlur = 20;
-            ctx.shadowColor = colorActual;
+            ctx.shadowColor = colorCentro;
             ctx.fillStyle = '#ffffff';
             ctx.fillText(textoActual, window.innerWidth / 2, window.innerHeight / 2);
 
-            // Actualizar y dibujar explosiones
+            // Explosiones de partículas
             for (let i = explosiones.length - 1; i >= 0; i--) {
                 explosiones[i].actualizar();
                 explosiones[i].dibujar();

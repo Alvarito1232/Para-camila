@@ -27,11 +27,11 @@
             align-items: center;
             justify-content: center;
             width: 90%;
-            max-width: 420px;
+            max-width: 440px;
             text-align: center;
         }
 
-        /* Botón de Presionar y Cuenta Regresiva */
+        /* Botón de Presionar */
         #btnPresionar {
             background: linear-gradient(135deg, #ff1493, #ff69b4);
             color: #ffffff;
@@ -69,20 +69,21 @@
             to { transform: scale(1.15); opacity: 1; }
         }
 
-        /* Cuadros de mensajes / Carta Romántica */
+        /* Tarjetas de mensajes */
         .tarjetaMensaje {
             display: none;
-            background: rgba(15, 15, 15, 0.92);
-            backdrop-filter: blur(12px);
-            border: 2px solid rgba(255, 105, 180, 0.4);
+            background: rgba(12, 12, 12, 0.94);
+            backdrop-filter: blur(14px);
+            border: 2px solid rgba(255, 105, 180, 0.5);
             padding: 25px 20px;
-            border-radius: 20px;
+            border-radius: 22px;
             color: #ffffff;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.8), 0 0 20px rgba(255, 105, 180, 0.3);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.85), 0 0 25px rgba(255, 105, 180, 0.35);
             max-height: 80vh;
             overflow-y: auto;
             animation: aparecer 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
             width: 100%;
+            text-align: left;
         }
 
         @keyframes aparecer {
@@ -94,19 +95,19 @@
             color: #ff69b4;
             font-size: 22px;
             margin-bottom: 12px;
+            text-align: center;
             text-shadow: 0 0 10px rgba(255, 105, 180, 0.5);
         }
 
         .tarjetaMensaje p {
             font-size: 14.5px;
-            line-height: 1.6;
+            line-height: 1.65;
             color: #f1f1f1;
             margin-bottom: 20px;
-            text-align: left;
         }
 
         .btnSiguiente {
-            background: #ff1493;
+            background: linear-gradient(135deg, #ff1493, #ff69b4);
             color: white;
             border: none;
             padding: 10px 24px;
@@ -114,45 +115,62 @@
             font-weight: bold;
             border-radius: 15px;
             cursor: pointer;
-            box-shadow: 0 0 10px rgba(255, 20, 147, 0.4);
-            transition: background 0.2s;
-            margin: 5px;
+            box-shadow: 0 0 12px rgba(255, 20, 147, 0.5);
+            transition: transform 0.2s;
+            display: block;
+            margin: 15px auto 0 auto;
         }
-        .btnSiguiente:hover { background: #ff69b4; }
+        .btnSiguiente:hover { transform: scale(1.05); }
 
-        /* Estilos del Minijuego Final */
+        /* Minijuego y Premios de Frases */
         #contenedorJuego {
             display: none;
-            background: rgba(15, 15, 15, 0.95);
-            backdrop-filter: blur(12px);
+            background: rgba(12, 12, 12, 0.95);
+            backdrop-filter: blur(14px);
             border: 2px solid rgba(255, 105, 180, 0.5);
-            padding: 20px;
-            border-radius: 20px;
+            padding: 22px;
+            border-radius: 22px;
             color: #ffffff;
             text-align: center;
             width: 100%;
             box-shadow: 0 15px 35px rgba(0,0,0,0.9);
             animation: aparecer 0.4s ease;
+            max-height: 85vh;
+            overflow-y: auto;
         }
         #marcadorPuntos {
-            font-size: 18px;
-            color: #ff69b4;
+            font-size: 16px;
+            color: #ff94b8;
             font-weight: bold;
-            margin-bottom: 15px;
+            margin-bottom: 10px;
+        }
+        /* Cuadro donde sale la frase premio */
+        #tarjetaPremio {
+            background: rgba(255, 20, 147, 0.12);
+            border: 1px dashed #ff69b4;
+            padding: 14px;
+            border-radius: 12px;
+            margin: 12px 0;
+            font-style: italic;
+            color: #ffb6c1;
+            font-size: 14.5px;
+            line-height: 1.5;
+            min-height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
         .corazonJugable {
             position: absolute;
             font-size: 32px;
             cursor: pointer;
             user-select: none;
-            transition: transform 0.1s;
-            animation: flotarJuego 2s linear infinite;
             z-index: 20;
+            animation: flotarJuego 1.8s ease-in-out infinite alternate;
         }
         @keyframes flotarJuego {
             0% { transform: translateY(0) scale(1); }
-            50% { transform: translateY(-15px) scale(1.1); }
-            100% { transform: translateY(0) scale(1); }
+            100% { transform: translateY(-12px) scale(1.15); }
         }
     </style>
 </head>
@@ -160,17 +178,22 @@
 
     <canvas id="canvasMatrix"></canvas>
 
+    <!-- Contenedor Interactivo Central -->
     <div id="contenedorCentro">
+        <!-- Botón inicial de Presionar -->
         <button id="btnPresionar" onclick="iniciarCuentaRegresiva()">Presionar ❤️</button>
 
+        <!-- Pantalla de Cuenta Regresiva (3, 2, 1) -->
         <div id="pantallaCuentaRegresiva">3</div>
 
+        <!-- Cuadro 1: Aniversario y Karim -->
         <div id="cuadro1" class="tarjetaMensaje">
             <h2>¡Feliz Aniversario, mi amor!</h2>
-            <p style="text-align: center; font-size: 17px; font-weight: bold; color: #ff94b8;">Feliz 1, mi Karim. Te lo dedico con todo mi amor y ser. ❤️</p>
+            <p style="text-align: center; font-size: 16px; font-weight: bold; color: #ff94b8;">Feliz 1, mi Karim. Te lo dedico con todo mi amor y ser. ❤️</p>
             <button class="btnSiguiente" onclick="mostrarPaso2()">Continuar ⚓️</button>
         </div>
 
+        <!-- Cuadro 2: Carta Completa -->
         <div id="cuadro2" class="tarjetaMensaje">
             <h2>Para ti, con todo mi amor</h2>
             <p>
@@ -180,18 +203,31 @@
                 Cuídate mucho por mí, mi amor. Deseo que cada viaje sea seguro y que regreses con muchas historias para contarme y muchos abrazos que darme. Ojalá podamos celebrar juntos muchísimos 1 de cada mes, porque quiero seguir construyendo recuerdos contigo.<br><br>
                 Te quiero muchísimo, Karim. ❤️ Gracias por ser tú, por llegar a mi vida y por hacerme sentir tan especial. No importa qué tan lejos estés, siempre tendrás un lugar en mi corazón. ¡Feliz aniversario, mi amor! ❤️⚓️🌊
             </p>
-            <button class="btnSiguiente" onclick="iniciarMinijuego()">¡Jugar Mini-Reto! 🎮</button>
-            <button class="btnSiguiente" onclick="reiniciarTodo()" style="background: #444;">Volver al inicio 💌</button>
+            <button class="btnSiguiente" onclick="iniciarMinijuego()">¡Atrapa los Corazones y gana Frases! 🎮</button>
         </div>
 
+        <!-- Cuadro Minijuego Final con Premios de Frases -->
         <div id="contenedorJuego">
-            <h2>Atrapa los Corazones ❤️</h2>
-            <div id="marcadorPuntos">Corazones atrapados: <span id="puntuacion">0</span> / 10</div>
-            <p id="mensajeVictoria" style="display:none; color: #00e676; font-weight: bold; font-size: 16px; margin-bottom: 15px;">¡Lo lograste mi amor! ¡Te amo muchísimo! ❤️⚓️</p>
-            <button class="btnSiguiente" onclick="reiniciarTodo()">Volver al Inicio 💌</button>
+            <h2>¡Premios para ti, mi amor! 💖</h2>
+            <div id="marcadorPuntos">Atrapa corazones para desbloquear frases: <span id="puntuacion">0</span> / 6</div>
+            
+            <div id="tarjetaPremio">¡Haz clic en un corazón flotante en la pantalla para revelar una frase especial! ❤️</div>
+
+            <div id="bloqueFinalCarta" style="display:none; text-align: left; margin-top: 15px; border-top: 1px solid rgba(255,105,180,0.3); padding-top: 12px;">
+                <p style="font-size: 13.5px; line-height: 1.6;">
+                    Y antes de terminar, quiero que recuerdes algo, Karim: no importa qué tan lejos te lleve el mar ni cuántos caminos tengamos que recorrer, siempre habrá una parte de mí esperando por ti. Mientras tú persigues tus sueños y cumples con tu misión, yo también seguiré luchando por los míos, estudiando y construyendo mi futuro en odontología. 🦷❤️<br><br>
+                    Quizás nuestros días estén llenos de responsabilidades, viajes, estudios y momentos en los que no podamos estar juntos, pero quiero que sigamos encontrando la manera de elegirnos una y otra vez. Porque quiero que cuando mires al futuro, también puedas imaginarme a tu lado.<br><br>
+                    Gracias por ser parte de mi historia, Karim. Espero que este sea solamente uno de los muchos aniversarios que celebraremos juntos. Te amo y siempre voy a desear que regreses con bien a mis brazos.<br><br>
+                    <strong style="color: #ff69b4;">“Tú tienes el mar para navegar y yo tengo mis sueños por cumplir, pero ambos tenemos un mismo lugar al que siempre queremos volver: el uno al otro.” ❤️</strong><br><br>
+                    Con todo mi amor,<br>
+                    <span style="font-size: 16px; font-weight: bold; color: #ff94b8;">Camila ❤️⚓️🦷</span>
+                </p>
+                <button class="btnSiguiente" onclick="reiniciarTodo()">Volver al Inicio 💌</button>
+            </div>
         </div>
     </div>
 
+    <!-- Contenedor dinámico para los corazones del minijuego -->
     <div id="areaJuego"></div>
 
     <script>
@@ -207,7 +243,7 @@
         ajustarCanvas();
         window.addEventListener('resize', ajustarCanvas);
 
-        // Lógica de la Cuenta Regresiva (3, 2, 1) al presionar
+        // Cuenta regresiva inicial
         function iniciarCuentaRegresiva() {
             document.getElementById('btnPresionar').style.display = 'none';
             const displayRegresiva = document.getElementById('pantallaCuentaRegresiva');
@@ -238,37 +274,48 @@
         function reiniciarTodo() {
             limpiarCorazonesJuego();
             document.getElementById('contenedorJuego').style.display = 'none';
+            document.getElementById('bloqueFinalCarta').style.display = 'none';
             document.getElementById('cuadro2').style.display = 'none';
             document.getElementById('cuadro1').style.display = 'none';
             document.getElementById('btnPresionar').style.display = 'block';
+            document.getElementById('tarjetaPremio').textContent = "¡Haz clic en un corazón flotante en la pantalla para revelar una frase especial! ❤️";
         }
 
-        // Lógica del Minijuego "Atrapa los Corazones"
+        // Frases románticas premio que pidió el usuario
+        const frasesPremios = [
+            "“Cada día 1 celebro la suerte de tenerte en mi vida.” ❤️",
+            "“No importa cuántos kilómetros nos separen, mi corazón siempre estará contigo.” 🌊",
+            "“Te elegiría una y mil veces, en esta vida y en cualquier otra.” 💖",
+            "“Mi lugar favorito siempre será a tu lado, sin importar dónde estés.” ⚓️",
+            "“Un mes más contigo, y mi amor por ti sigue creciendo.” 🥺",
+            "“Que la distancia sea solo un capítulo más de nuestra historia, no el final.” ✨"
+        ];
+
         let puntos = 0;
-        let temporizadorJuego = null;
+        let frasesUsadas = [];
 
         function iniciarMinijuego() {
             document.getElementById('cuadro2').style.display = 'none';
             document.getElementById('contenedorJuego').style.display = 'block';
             puntos = 0;
+            frasesUsadas = [];
             document.getElementById('puntuacion').textContent = puntos;
-            document.getElementById('mensajeVictoria').style.display = 'none';
+            document.getElementById('tarjetaPremio').textContent = "¡Haz clic en un corazón flotante en la pantalla para revelar una frase especial! ❤️";
+            document.getElementById('bloqueFinalCarta').style.display = 'none';
             limpiarCorazonesJuego();
 
-            // Generar corazones interactivos en pantalla aleatoriamente
-            for (let i = 0; i < 10; i++) {
-                crearCorazonJugable();
-            }
+            crearCorazonJugable();
         }
 
         function crearCorazonJugable() {
+            if (puntos >= 6) return; // Si ya atrapó las 6 frases, terminamos
+
             const corazon = document.createElement('div');
             corazon.className = 'corazonJugable';
             corazon.innerHTML = '❤️';
             
-            // Posición aleatoria dentro de la pantalla
-            const randomX = Math.random() * (window.innerWidth - 80) + 40;
-            const randomY = Math.random() * (window.innerHeight - 250) + 100;
+            const randomX = Math.random() * (window.innerWidth - 90) + 40;
+            const randomY = Math.random() * (window.innerHeight - 300) + 120;
             
             corazon.style.left = randomX + 'px';
             corazon.style.top = randomY + 'px';
@@ -276,12 +323,19 @@
             corazon.onclick = function() {
                 puntos++;
                 document.getElementById('puntuacion').textContent = puntos;
+                
+                // Mostrar la frase premio correspondiente
+                if (frasesPremios[puntos - 1]) {
+                    document.getElementById('tarjetaPremio').textContent = frasesPremios[puntos - 1];
+                }
+
                 corazon.remove();
 
-                if (puntos >= 10) {
-                    document.getElementById('mensajeVictoria').style.display = 'block';
+                if (puntos >= 6) {
+                    // Mostrar el texto final con el botón de cierre y la dedicatoria completa
+                    document.getElementById('bloqueFinalCarta').style.display = 'block';
                 } else {
-                    crearCorazonJugable(); // Generar otro para continuar
+                    crearCorazonJugable(); // Lanzar el siguiente corazón
                 }
             };
 
@@ -293,7 +347,7 @@
             existentes.forEach(c => c.remove());
         }
 
-        // Corazones flotantes del fondo general
+        // Corazones flotantes del fondo
         class CorazonFlotante {
             constructor() {
                 this.reiniciar();
@@ -338,7 +392,7 @@
             corazones.push(c);
         }
 
-        // Lluvia Matrix optimizada con velocidad ligeramente aumentada
+        // Lluvia Matrix optimizada
         const esCelular = window.innerWidth < 600;
         const espacioX = esCelular ? 75 : 95;
         const espacioY = 28;

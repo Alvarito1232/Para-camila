@@ -31,7 +31,7 @@
             text-align: center;
         }
 
-        /* Botón de Presionar */
+        /* Botón de Presionar y Cuenta Regresiva */
         #btnPresionar {
             background: linear-gradient(135deg, #ff1493, #ff69b4);
             color: #ffffff;
@@ -54,6 +54,21 @@
             100% { transform: scale(1); box-shadow: 0 0 20px rgba(255, 20, 147, 0.5); }
         }
 
+        /* Pantalla de Cuenta Regresiva (3, 2, 1) */
+        #pantallaCuentaRegresiva {
+            display: none;
+            font-size: 85px;
+            font-weight: bold;
+            color: #ffffff;
+            text-shadow: 0 0 30px #ff1493, 0 0 50px #ff69b4;
+            animation: zoomRegresiva 0.8s infinite alternate;
+        }
+
+        @keyframes zoomRegresiva {
+            from { transform: scale(0.9); opacity: 0.8; }
+            to { transform: scale(1.15); opacity: 1; }
+        }
+
         /* Cuadros de mensajes / Carta Romántica */
         .tarjetaMensaje {
             display: none;
@@ -67,6 +82,7 @@
             max-height: 80vh;
             overflow-y: auto;
             animation: aparecer 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+            width: 100%;
         }
 
         @keyframes aparecer {
@@ -100,8 +116,44 @@
             cursor: pointer;
             box-shadow: 0 0 10px rgba(255, 20, 147, 0.4);
             transition: background 0.2s;
+            margin: 5px;
         }
         .btnSiguiente:hover { background: #ff69b4; }
+
+        /* Estilos del Minijuego Final */
+        #contenedorJuego {
+            display: none;
+            background: rgba(15, 15, 15, 0.95);
+            backdrop-filter: blur(12px);
+            border: 2px solid rgba(255, 105, 180, 0.5);
+            padding: 20px;
+            border-radius: 20px;
+            color: #ffffff;
+            text-align: center;
+            width: 100%;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.9);
+            animation: aparecer 0.4s ease;
+        }
+        #marcadorPuntos {
+            font-size: 18px;
+            color: #ff69b4;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+        .corazonJugable {
+            position: absolute;
+            font-size: 32px;
+            cursor: pointer;
+            user-select: none;
+            transition: transform 0.1s;
+            animation: flotarJuego 2s linear infinite;
+            z-index: 20;
+        }
+        @keyframes flotarJuego {
+            0% { transform: translateY(0) scale(1); }
+            50% { transform: translateY(-15px) scale(1.1); }
+            100% { transform: translateY(0) scale(1); }
+        }
     </style>
 </head>
 <body>
@@ -109,7 +161,9 @@
     <canvas id="canvasMatrix"></canvas>
 
     <div id="contenedorCentro">
-        <button id="btnPresionar" onclick="mostrarPaso1()">Presionar ❤️</button>
+        <button id="btnPresionar" onclick="iniciarCuentaRegresiva()">Presionar ❤️</button>
+
+        <div id="pantallaCuentaRegresiva">3</div>
 
         <div id="cuadro1" class="tarjetaMensaje">
             <h2>¡Feliz Aniversario, mi amor!</h2>
@@ -126,9 +180,19 @@
                 Cuídate mucho por mí, mi amor. Deseo que cada viaje sea seguro y que regreses con muchas historias para contarme y muchos abrazos que darme. Ojalá podamos celebrar juntos muchísimos 1 de cada mes, porque quiero seguir construyendo recuerdos contigo.<br><br>
                 Te quiero muchísimo, Karim. ❤️ Gracias por ser tú, por llegar a mi vida y por hacerme sentir tan especial. No importa qué tan lejos estés, siempre tendrás un lugar en mi corazón. ¡Feliz aniversario, mi amor! ❤️⚓️🌊
             </p>
-            <button class="btnSiguiente" onclick="reiniciarCarta()">Volver 💌</button>
+            <button class="btnSiguiente" onclick="iniciarMinijuego()">¡Jugar Mini-Reto! 🎮</button>
+            <button class="btnSiguiente" onclick="reiniciarTodo()" style="background: #444;">Volver al inicio 💌</button>
+        </div>
+
+        <div id="contenedorJuego">
+            <h2>Atrapa los Corazones ❤️</h2>
+            <div id="marcadorPuntos">Corazones atrapados: <span id="puntuacion">0</span> / 10</div>
+            <p id="mensajeVictoria" style="display:none; color: #00e676; font-weight: bold; font-size: 16px; margin-bottom: 15px;">¡Lo lograste mi amor! ¡Te amo muchísimo! ❤️⚓️</p>
+            <button class="btnSiguiente" onclick="reiniciarTodo()">Volver al Inicio 💌</button>
         </div>
     </div>
+
+    <div id="areaJuego"></div>
 
     <script>
         const canvas = document.getElementById('canvasMatrix');
@@ -143,10 +207,27 @@
         ajustarCanvas();
         window.addEventListener('resize', ajustarCanvas);
 
-        // Funciones para alternar los cuadros de texto
-        function mostrarPaso1() {
+        // Lógica de la Cuenta Regresiva (3, 2, 1) al presionar
+        function iniciarCuentaRegresiva() {
             document.getElementById('btnPresionar').style.display = 'none';
-            document.getElementById('cuadro1').style.display = 'block';
+            const displayRegresiva = document.getElementById('pantallaCuentaRegresiva');
+            displayRegresiva.style.display = 'block';
+
+            let contador = 3;
+            displayRegresiva.textContent = contador;
+
+            let intervalo = setInterval(() => {
+                contador--;
+                if (contador > 0) {
+                    displayRegresiva.textContent = contador;
+                } else if (contador === 0) {
+                    displayRegresiva.textContent = "¡❤️!";
+                } else {
+                    clearInterval(intervalo);
+                    displayRegresiva.style.display = 'none';
+                    document.getElementById('cuadro1').style.display = 'block';
+                }
+            }, 800);
         }
 
         function mostrarPaso2() {
@@ -154,12 +235,65 @@
             document.getElementById('cuadro2').style.display = 'block';
         }
 
-        function reiniciarCarta() {
+        function reiniciarTodo() {
+            limpiarCorazonesJuego();
+            document.getElementById('contenedorJuego').style.display = 'none';
             document.getElementById('cuadro2').style.display = 'none';
+            document.getElementById('cuadro1').style.display = 'none';
             document.getElementById('btnPresionar').style.display = 'block';
         }
 
-        // Corazones flotantes
+        // Lógica del Minijuego "Atrapa los Corazones"
+        let puntos = 0;
+        let temporizadorJuego = null;
+
+        function iniciarMinijuego() {
+            document.getElementById('cuadro2').style.display = 'none';
+            document.getElementById('contenedorJuego').style.display = 'block';
+            puntos = 0;
+            document.getElementById('puntuacion').textContent = puntos;
+            document.getElementById('mensajeVictoria').style.display = 'none';
+            limpiarCorazonesJuego();
+
+            // Generar corazones interactivos en pantalla aleatoriamente
+            for (let i = 0; i < 10; i++) {
+                crearCorazonJugable();
+            }
+        }
+
+        function crearCorazonJugable() {
+            const corazon = document.createElement('div');
+            corazon.className = 'corazonJugable';
+            corazon.innerHTML = '❤️';
+            
+            // Posición aleatoria dentro de la pantalla
+            const randomX = Math.random() * (window.innerWidth - 80) + 40;
+            const randomY = Math.random() * (window.innerHeight - 250) + 100;
+            
+            corazon.style.left = randomX + 'px';
+            corazon.style.top = randomY + 'px';
+
+            corazon.onclick = function() {
+                puntos++;
+                document.getElementById('puntuacion').textContent = puntos;
+                corazon.remove();
+
+                if (puntos >= 10) {
+                    document.getElementById('mensajeVictoria').style.display = 'block';
+                } else {
+                    crearCorazonJugable(); // Generar otro para continuar
+                }
+            };
+
+            document.body.appendChild(corazon);
+        }
+
+        function limpiarCorazonesJuego() {
+            const existentes = document.querySelectorAll('.corazonJugable');
+            existentes.forEach(c => c.remove());
+        }
+
+        // Corazones flotantes del fondo general
         class CorazonFlotante {
             constructor() {
                 this.reiniciar();
@@ -235,7 +369,7 @@
             const colorDinamico = `hsl(${tonoMatiz}, 100%, 70%)`;
 
             const textoFondo = "Te Amo";
-            const velocidadBase = 3.0; // Velocidad un poquito más rápida como pediste
+            const velocidadBase = 3.0;
 
             const tamanoFuenteTexto = esCelular ? 17 : 20;
             ctx.font = `bold ${tamanoFuenteTexto}px sans-serif`;

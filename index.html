@@ -3,66 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Efecto Romántico Pro - Estilo TikTok</title>
+    <title>I Love You - TikTok Effect</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body, html { width: 100%; height: 100%; overflow: hidden; background: #000000; font-family: 'Segoe UI', Roboto, sans-serif; }
         canvas { display: block; width: 100%; height: 100%; }
-
-        #panel-control {
-            position: absolute;
-            top: 15px; left: 15px;
-            background: rgba(20, 20, 20, 0.85);
-            backdrop-filter: blur(8px);
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            padding: 12px 15px;
-            border-radius: 10px;
-            color: #ffffff;
-            font-size: 13px;
-            z-index: 100;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.8);
-            width: 210px;
-        }
-
-        .control-grupo { margin-bottom: 10px; }
-        .control-grupo:last-child { margin-bottom: 0; }
-        .control-grupo label { display: block; margin-bottom: 4px; color: #ff80ab; font-weight: 600; }
-        .control-grupo input[type="range"] { width: 100%; accent-color: #ff1744; cursor: pointer; }
-        .control-grupo input[type="color"] { width: 100%; height: 28px; border: none; border-radius: 4px; background: transparent; cursor: pointer; }
-        .control-grupo input[type="text"] {
-            width: 100%; padding: 5px 8px;
-            background: rgba(0, 0, 0, 0.6);
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            border-radius: 4px; color: #fff; font-size: 12px; outline: none;
-        }
     </style>
 </head>
 <body>
-
-    <div id="panel-control">
-        <div class="control-grupo">
-            <label>Velocidad</label>
-            <input type="range" id="inputVelocidad" min="1" max="8" step="0.5" value="4.5">
-        </div>
-        <div class="control-grupo">
-            <label>Color Principal</label>
-            <input type="color" id="inputColor" value="#ff1744">
-        </div>
-        <div class="control-grupo">
-            <label>Texto Fondo</label>
-            <input type="text" id="inputTextoFondo" value="My Love">
-        </div>
-    </div>
 
     <canvas id="canvasTikTok"></canvas>
 
     <script>
         const canvas = document.getElementById('canvasTikTok');
         const ctx = canvas.getContext('2d');
-
-        const inputVelocidad = document.getElementById('inputVelocidad');
-        const inputColor = document.getElementById('inputColor');
-        const inputTextoFondo = document.getElementById('inputTextoFondo');
 
         function ajustarCanvas() {
             const dpr = window.devicePixelRatio || 1;
@@ -116,14 +70,15 @@
         let explosiones = [];
         let desplazamientoY = 0;
         let tiempoInicio = Date.now();
-        let modoVerde = false; // Controla el cambio de color a los 7 segundos
+        let modoVerde = false; // Controla el cambio automático de color a los 7 segundos
 
+        // Generador de fuegos artificiales intermitentes
         setInterval(() => {
             if (explosiones.length < 5) {
                 const rx = Math.random() * window.innerWidth;
                 const ry = Math.random() * window.innerHeight;
-                // Si ya pasaron los 7 segundos, los fuegos artificiales también salen verdes
-                const colorFuego = modoVerde ? '#00e676' : inputColor.value;
+                // Coincide el color de la explosión con el estado actual (Rojo o Verde)
+                const colorFuego = modoVerde ? '#00e676' : '#ff1744';
                 explosiones.push(new Explosion(rx, ry, colorFuego));
             }
         }, 900);
@@ -132,20 +87,18 @@
             ctx.fillStyle = '#000000';
             ctx.fillRect(0, 0, window.innerWidth, window.innerHeight);
 
-            const velocidadInput = parseFloat(inputVelocidad.value);
-            const textoFondo = inputTextoFondo.value || "My Love";
-
-            // Verificar si ya pasaron 7 segundos (7000 milisegundos) para cambiar a verde
+            // Verificar si ya transcurrieron los 7 segundos (7000 ms)
             let tiempoTranscurrido = Date.now() - tiempoInicio;
             if (tiempoTranscurrido > 7000) {
                 modoVerde = true;
             }
 
-            // Definir el color actual según el tiempo (7s en rojo/fucsia, luego cambia a verde)
-            let colorActualFondo = modoVerde ? '#00e676' : inputColor.value;
+            // Colores exactos según la fase: Primeros 7s en rojo, luego cambia a verde puro
+            const colorActual = modoVerde ? '#00e676' : '#ff1744';
+            const textoFondo = "My Love";
 
-            // Velocidad rápida de caída de las columnas
-            desplazamientoY += 4 * velocidadInput;
+            // Velocidad fija configurada en x3
+            desplazamientoY += 4.5 * 3;
             if (desplazamientoY > 35) desplazamientoY = 0;
 
             ctx.font = 'bold 14px sans-serif';
@@ -156,6 +109,7 @@
             const filasTotales = Math.ceil(window.innerHeight / espacioY) + 4;
             const columnasTotales = Math.ceil(window.innerWidth / espacioX) + 2;
 
+            // Dibujar las columnas de palabras cayendo a velocidad x3
             for (let f = -1; f < filasTotales; f++) {
                 let posY = (f * espacioY) + desplazamientoY - espacioY;
                 let desplazamientoFila = (f % 2 === 0) ? 0 : 40;
@@ -163,28 +117,28 @@
                 for (let c = 0; c < columnasTotales; c++) {
                     let posX = (c * espacioX) + desplazamientoFila;
 
-                    ctx.fillStyle = colorActualFondo;
+                    ctx.fillStyle = colorActual;
                     ctx.globalAlpha = 0.45;
                     ctx.shadowBlur = 6;
-                    ctx.shadowColor = colorActualFondo;
+                    ctx.shadowColor = colorActual;
                     ctx.fillText(textoFondo, posX, posY);
                 }
             }
 
-            // Frase central idéntica a tus capturas: "I Love You!" + ❤️
+            // Frase central fija: "I Love You! ❤️" con brillo adaptado
             ctx.globalAlpha = 1.0;
             let tamanoTexto = Math.min(window.innerWidth / 8, 52);
             ctx.font = `bold ${tamanoTexto}px sans-serif`;
             ctx.textAlign = 'center';
             ctx.textBaseline = 'middle';
             ctx.shadowBlur = 20;
-            ctx.shadowColor = colorActualFondo;
+            ctx.shadowColor = colorActual;
             ctx.fillStyle = '#ffffff';
 
             let textoCentro = "I Love You! ❤️";
             ctx.fillText(textoCentro, window.innerWidth / 2, window.innerHeight / 2);
 
-            // Explosiones
+            // Renderizar partículas de fuegos artificiales
             for (let i = explosiones.length - 1; i >= 0; i--) {
                 explosiones[i].actualizar();
                 explosiones[i].dibujar();

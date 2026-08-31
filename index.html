@@ -94,12 +94,13 @@
             text-align: left;
         }
 
+        /* CORRECCIÓN: Títulos bien visibles en blanco brillante con sombra */
         .tarjetaMensaje h2 {
-            color: #ff69b4;
+            color: #ffffff;
             font-size: 22px;
             margin-bottom: 14px;
             text-align: center;
-            text-shadow: 0 0 12px rgba(255, 105, 180, 0.6);
+            text-shadow: 0 0 10px #ff69b4, 0 0 20px #ff1493;
         }
 
         .tarjetaMensaje p {
@@ -133,6 +134,14 @@
             overflow-y: auto;
             text-align: center;
             padding-right: 4px;
+        }
+
+        #contenedorJuego h2 {
+            color: #ffffff;
+            font-size: 22px;
+            margin-bottom: 14px;
+            text-align: center;
+            text-shadow: 0 0 10px #ff69b4, 0 0 20px #ff1493;
         }
 
         /* Estilo elegante para la barra de desplazamiento */
@@ -204,31 +213,25 @@
 
     <canvas id="canvasMatrix"></canvas>
 
-    <!-- Botón de música -->
     <button id="btnMusica" onclick="toggleMusica()">🎵 Música: OFF</button>
     <audio id="audioFondo" loop>
-        <source src="cancion.mp3" type="audio/mpeg">
+        <source src="musica.mp4" type="video/mp4">
     </audio>
 
-    <!-- Contenedor central con panel protector -->
     <div id="contenedorCentro">
-        <!-- Portada Inicial -->
         <div id="portadaDiv">
             <div id="portadaTitulo">Para el amor de mi vida... ⚓️</div>
             <button id="btnPresionar" onclick="iniciarCuentaRegresiva()">Presionar ❤️</button>
         </div>
 
-        <!-- Pantalla de Cuenta Regresiva (3, 2, 1) -->
         <div id="pantallaCuentaRegresiva">3</div>
 
-        <!-- Cuadro 1: Aniversario y Mi Karin -->
         <div id="cuadro1" class="tarjetaMensaje">
             <h2>¡Feliz Aniversario, mi amor!</h2>
             <p style="text-align: center; font-size: 16px; font-weight: bold; color: #ff94b8;">Feliz 1, Mi Karin. Te lo dedico con todo mi amor y ser. ❤️</p>
             <button class="btnSiguiente" onclick="mostrarPaso2()">Continuar ⚓️</button>
         </div>
 
-        <!-- Cuadro 2: Carta Completa -->
         <div id="cuadro2" class="tarjetaMensaje">
             <h2>Para ti, con todo mi amor</h2>
             <p>
@@ -241,7 +244,6 @@
             <button class="btnSiguiente" onclick="iniciarMinijuego()">¡Atrapa los Corazones y gana Frases! 🎮</button>
         </div>
 
-        <!-- Cuadro Minijuego Final con Premios de Frases -->
         <div id="contenedorJuego">
             <h2>¡Premios para ti, mi amor! 💖</h2>
             <div id="marcadorPuntos">Atrapa corazones para desbloquear frases: <span id="puntuacion">0</span> / 6</div>
@@ -262,7 +264,6 @@
         </div>
     </div>
 
-    <!-- Contenedor dinámico para los corazones del minijuego -->
     <div id="areaJuego"></div>
 
     <script>
@@ -296,6 +297,14 @@
 
         // Cuenta regresiva inicial
         function iniciarCuentaRegresiva() {
+            // Activar música automáticamente al presionar el botón de inicio si el usuario lo desea
+            const audio = document.getElementById('audioFondo');
+            if (!musicaActiva) {
+                audio.play().catch(() => {});
+                document.getElementById('btnMusica').textContent = "🎵 Música: ON";
+                musicaActiva = true;
+            }
+
             document.getElementById('portadaDiv').style.display = 'none';
             const displayRegresiva = document.getElementById('pantallaCuentaRegresiva');
             displayRegresiva.style.display = 'block';

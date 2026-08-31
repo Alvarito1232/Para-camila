@@ -15,7 +15,7 @@
         }
         canvas { display: block; width: 100%; height: 100%; position: absolute; top: 0; left: 0; z-index: 1; }
 
-        /* Contenedor central interactivo */
+        /* Contenedor central con panel protector oscuro para máxima nitidez */
         #contenedorCentro {
             position: absolute;
             top: 50%;
@@ -29,22 +29,22 @@
             width: 90%;
             max-width: 440px;
             text-align: center;
+            background: rgba(0, 0, 0, 0.75);
+            backdrop-filter: blur(10px);
+            padding: 30px 20px;
+            border-radius: 28px;
+            border: 1px solid rgba(255, 105, 180, 0.3);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.9);
         }
 
         /* Título de Portada Inicial */
         #portadaTitulo {
-            font-size: 19px;
+            font-size: 20px;
             color: #ffb6c1;
-            margin-bottom: 20px;
-            font-weight: 500;
+            margin-bottom: 22px;
+            font-weight: 600;
             letter-spacing: 1px;
-            text-shadow: 0 0 10px rgba(255, 105, 180, 0.6);
-            animation: aparecerPortada 1.2s ease-out forwards;
-        }
-
-        @keyframes aparecerPortada {
-            from { opacity: 0; transform: translateY(-15px); }
-            to { opacity: 1; transform: translateY(0); }
+            text-shadow: 0 0 12px rgba(255, 105, 180, 0.8);
         }
 
         /* Botón de Presionar */
@@ -57,7 +57,7 @@
             font-weight: bold;
             border-radius: 30px;
             cursor: pointer;
-            box-shadow: 0 0 25px rgba(255, 20, 147, 0.6);
+            box-shadow: 0 0 25px rgba(255, 20, 147, 0.7);
             transition: transform 0.2s ease, box-shadow 0.2s ease;
             outline: none;
             animation: latido 1.5s infinite;
@@ -85,31 +85,18 @@
             to { transform: scale(1.15); opacity: 1; }
         }
 
-        /* Tarjetas de mensajes estilo carta estética */
+        /* Tarjetas de mensajes */
         .tarjetaMensaje {
             display: none;
-            background: rgba(12, 12, 12, 0.95);
-            backdrop-filter: blur(16px);
-            border: 2px solid rgba(255, 105, 180, 0.6);
-            padding: 26px 22px;
-            border-radius: 24px;
-            color: #ffffff;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.9), 0 0 30px rgba(255, 105, 180, 0.4);
-            max-height: 80vh;
-            overflow-y: auto;
-            animation: aparecer 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
             width: 100%;
+            max-height: 75vh;
+            overflow-y: auto;
             text-align: left;
-        }
-
-        @keyframes aparecer {
-            from { opacity: 0; transform: scale(0.8) translateY(20px); }
-            to { opacity: 1; transform: scale(1) translateY(0); }
         }
 
         .tarjetaMensaje h2 {
             color: #ff69b4;
-            font-size: 23px;
+            font-size: 22px;
             margin-bottom: 14px;
             text-align: center;
             text-shadow: 0 0 12px rgba(255, 105, 180, 0.6);
@@ -119,7 +106,7 @@
             font-size: 14.5px;
             line-height: 1.7;
             color: #f4f4f4;
-            margin-bottom: 20px;
+            margin-bottom: 18px;
         }
 
         .btnSiguiente {
@@ -141,36 +128,28 @@
         /* Minijuego y Premios de Frases */
         #contenedorJuego {
             display: none;
-            background: rgba(12, 12, 12, 0.96);
-            backdrop-filter: blur(16px);
-            border: 2px solid rgba(255, 105, 180, 0.6);
-            padding: 24px;
-            border-radius: 24px;
-            color: #ffffff;
-            text-align: center;
             width: 100%;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.95);
-            animation: aparecer 0.4s ease;
-            max-height: 85vh;
+            max-height: 80vh;
             overflow-y: auto;
+            text-align: center;
         }
         #marcadorPuntos {
-            font-size: 16px;
+            font-size: 15px;
             color: #ff94b8;
             font-weight: bold;
-            margin-bottom: 12px;
+            margin-bottom: 10px;
         }
         #tarjetaPremio {
             background: rgba(255, 20, 147, 0.15);
             border: 1px dashed #ff69b4;
-            padding: 15px;
+            padding: 14px;
             border-radius: 14px;
-            margin: 14px 0;
+            margin: 12px 0;
             font-style: italic;
             color: #ffb6c1;
-            font-size: 15px;
+            font-size: 14.5px;
             line-height: 1.5;
-            min-height: 65px;
+            min-height: 60px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -187,26 +166,54 @@
             0% { transform: translateY(0) scale(1); }
             100% { transform: translateY(-14px) scale(1.18); }
         }
+
+        /* Botón de música flotante en la esquina */
+        #btnMusica {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            z-index: 100;
+            background: rgba(255, 20, 147, 0.3);
+            border: 1px solid #ff69b4;
+            color: white;
+            padding: 8px 14px;
+            border-radius: 20px;
+            font-size: 13px;
+            cursor: pointer;
+            backdrop-filter: blur(5px);
+        }
     </style>
 </head>
 <body>
 
     <canvas id="canvasMatrix"></canvas>
 
+    <!-- Botón de música (Pega el link de tu canción en el archivo de audio abajo si deseas) -->
+    <button id="btnMusica" onclick="toggleMusica()">🎵 Música: OFF</button>
+    <audio id="audioFondo" loop>
+        <!-- Pega aquí el enlace directo a tu archivo .mp3 cuando lo tengas -->
+        <!-- <source src="TU_ENLACE_DE_MUSICA.mp3" type="audio/mpeg"> -->
+    </audio>
+
+    <!-- Contenedor central con panel protector -->
     <div id="contenedorCentro">
+        <!-- Portada Inicial -->
         <div id="portadaDiv">
             <div id="portadaTitulo">Para el amor de mi vida... ⚓️</div>
             <button id="btnPresionar" onclick="iniciarCuentaRegresiva()">Presionar ❤️</button>
         </div>
 
+        <!-- Pantalla de Cuenta Regresiva (3, 2, 1) -->
         <div id="pantallaCuentaRegresiva">3</div>
 
+        <!-- Cuadro 1: Aniversario y Karim -->
         <div id="cuadro1" class="tarjetaMensaje">
             <h2>¡Feliz Aniversario, mi amor!</h2>
             <p style="text-align: center; font-size: 16px; font-weight: bold; color: #ff94b8;">Feliz 1, mi Karim. Te lo dedico con todo mi amor y ser. ❤️</p>
             <button class="btnSiguiente" onclick="mostrarPaso2()">Continuar ⚓️</button>
         </div>
 
+        <!-- Cuadro 2: Carta Completa -->
         <div id="cuadro2" class="tarjetaMensaje">
             <h2>Para ti, con todo mi amor</h2>
             <p>
@@ -219,6 +226,7 @@
             <button class="btnSiguiente" onclick="iniciarMinijuego()">¡Atrapa los Corazones y gana Frases! 🎮</button>
         </div>
 
+        <!-- Cuadro Minijuego Final con Premios de Frases -->
         <div id="contenedorJuego">
             <h2>¡Premios para ti, mi amor! 💖</h2>
             <div id="marcadorPuntos">Atrapa corazones para desbloquear frases: <span id="puntuacion">0</span> / 6</div>
@@ -239,6 +247,7 @@
         </div>
     </div>
 
+    <!-- Contenedor dinámico para los corazones del minijuego -->
     <div id="areaJuego"></div>
 
     <script>
@@ -253,6 +262,22 @@
         }
         ajustarCanvas();
         window.addEventListener('resize', ajustarCanvas);
+
+        // Control de música
+        let musicaActiva = false;
+        function toggleMusica() {
+            const audio = document.getElementById('audioFondo');
+            const btn = document.getElementById('btnMusica');
+            if (!musicaActiva) {
+                audio.play().catch(() => {});
+                btn.textContent = "🎵 Música: ON";
+                musicaActiva = true;
+            } else {
+                audio.pause();
+                btn.textContent = "🎵 Música: OFF";
+                musicaActiva = false;
+            }
+        }
 
         // Cuenta regresiva inicial
         function iniciarCuentaRegresiva() {
@@ -371,7 +396,7 @@
             }
             dibujar() {
                 ctx.save();
-                ctx.fillStyle = '#ffd700'; // Destellos dorados y estelares
+                ctx.fillStyle = '#ffd700';
                 ctx.globalAlpha = Math.abs(this.alfa);
                 ctx.shadowBlur = 6;
                 ctx.shadowColor = '#fff';
@@ -432,7 +457,6 @@
             corazones.push(c);
         }
 
-        // Lluvia Matrix optimizada
         const esCelular = window.innerWidth < 600;
         const espacioX = esCelular ? 75 : 95;
         const espacioY = 28;
@@ -458,7 +482,6 @@
             ctx.fillStyle = '#000000';
             ctx.fillRect(0, 0, window.innerWidth, window.innerHeight);
 
-            // Dibujar destellos de estrellas doradas de fondo
             for (let estrella of estrellas) {
                 estrella.actualizar();
                 estrella.dibujar();

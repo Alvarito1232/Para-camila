@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Feliz Aniversario mi Karim ❤️</title>
+    <title>Feliz Aniversario Mi Karin ❤️</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body, html { 
@@ -15,7 +15,7 @@
         }
         canvas { display: block; width: 100%; height: 100%; position: absolute; top: 0; left: 0; z-index: 1; }
 
-        /* Contenedor central con panel protector oscuro para máxima nitidez */
+        /* Contenedor central con panel protector oscuro sólido y elegante */
         #contenedorCentro {
             position: absolute;
             top: 50%;
@@ -26,15 +26,15 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            width: 90%;
-            max-width: 440px;
+            width: 92%;
+            max-width: 460px;
             text-align: center;
-            background: rgba(0, 0, 0, 0.75);
-            backdrop-filter: blur(10px);
-            padding: 30px 20px;
+            background: rgba(10, 10, 10, 0.92);
+            backdrop-filter: blur(12px);
+            padding: 30px 22px;
             border-radius: 28px;
-            border: 1px solid rgba(255, 105, 180, 0.3);
-            box-shadow: 0 15px 35px rgba(0,0,0,0.9);
+            border: 1.5px solid rgba(255, 105, 180, 0.4);
+            box-shadow: 0 20px 45px rgba(0,0,0,0.95);
         }
 
         /* Título de Portada Inicial */
@@ -125,14 +125,25 @@
         }
         .btnSiguiente:hover { transform: scale(1.05); }
 
-        /* Minijuego y Premios de Frases */
+        /* Minijuego y Premios de Frases - Mejorado visualmente para evitar solapamientos */
         #contenedorJuego {
             display: none;
             width: 100%;
             max-height: 80vh;
             overflow-y: auto;
             text-align: center;
+            padding-right: 4px;
         }
+
+        /* Estilo elegante para la barra de desplazamiento */
+        #contenedorJuego::-webkit-scrollbar, .tarjetaMensaje::-webkit-scrollbar {
+            width: 6px;
+        }
+        #contenedorJuego::-webkit-scrollbar-thumb, .tarjetaMensaje::-webkit-scrollbar-thumb {
+            background: rgba(255, 105, 180, 0.5);
+            border-radius: 10px;
+        }
+
         #marcadorPuntos {
             font-size: 15px;
             color: #ff94b8;
@@ -140,7 +151,7 @@
             margin-bottom: 10px;
         }
         #tarjetaPremio {
-            background: rgba(255, 20, 147, 0.15);
+            background: rgba(255, 20, 147, 0.18);
             border: 1px dashed #ff69b4;
             padding: 14px;
             border-radius: 14px;
@@ -188,11 +199,10 @@
 
     <canvas id="canvasMatrix"></canvas>
 
-    <!-- Botón de música (Pega el link de tu canción en el archivo de audio abajo si deseas) -->
+    <!-- Botón de música (Pega el enlace de tu canción en el atributo src de la etiqueta audio abajo) -->
     <button id="btnMusica" onclick="toggleMusica()">🎵 Música: OFF</button>
     <audio id="audioFondo" loop>
-        <!-- Pega aquí el enlace directo a tu archivo .mp3 cuando lo tengas -->
-        <!-- <source src="TU_ENLACE_DE_MUSICA.mp3" type="audio/mpeg"> -->
+        <!-- Ejemplo: <source src="tu_cancion.mp3" type="audio/mpeg"> -->
     </audio>
 
     <!-- Contenedor central con panel protector -->
@@ -206,10 +216,10 @@
         <!-- Pantalla de Cuenta Regresiva (3, 2, 1) -->
         <div id="pantallaCuentaRegresiva">3</div>
 
-        <!-- Cuadro 1: Aniversario y Karim -->
+        <!-- Cuadro 1: Aniversario y Mi Karin -->
         <div id="cuadro1" class="tarjetaMensaje">
             <h2>¡Feliz Aniversario, mi amor!</h2>
-            <p style="text-align: center; font-size: 16px; font-weight: bold; color: #ff94b8;">Feliz 1, mi Karim. Te lo dedico con todo mi amor y ser. ❤️</p>
+            <p style="text-align: center; font-size: 16px; font-weight: bold; color: #ff94b8;">Feliz 1, Mi Karin. Te lo dedico con todo mi amor y ser. ❤️</p>
             <button class="btnSiguiente" onclick="mostrarPaso2()">Continuar ⚓️</button>
         </div>
 
@@ -217,16 +227,16 @@
         <div id="cuadro2" class="tarjetaMensaje">
             <h2>Para ti, con todo mi amor</h2>
             <p>
-                Feliz aniversario, mi amor, mi Karim ❤️. Hoy, como cada 1 de cada mes, quiero agradecer por tenerte en mi vida y por todos los momentos tan bonitos que hemos compartido.<br><br>
+                Feliz aniversario, mi amor, Mi Karin ❤️. Hoy, como cada 1 de cada mes, quiero agradecer por tenerte en mi vida y por todos los momentos tan bonitos que hemos compartido.<br><br>
                 Sé que pronto te irás de viaje y voy a extrañarte muchísimo, pero quiero que te lleves contigo la certeza de que aquí habrá alguien que estará pensando en ti y esperando tu regreso. 🥺❤️<br><br>
                 Admiro mucho al hombre que eres, tu valentía, tu dedicación y la pasión con la que haces lo que amas. Como marino, tendrás que estar lejos y enfrentar nuevos caminos, pero quiero que recuerdes que, aunque el mar nos separe, mi amor siempre encontrará la manera de llegar hasta ti. ⚓️🌊❤️<br><br>
                 Cuídate mucho por mí, mi amor. Deseo que cada viaje sea seguro y que regreses con muchas historias para contarme y muchos abrazos que darme. Ojalá podamos celebrar juntos muchísimos 1 de cada mes, porque quiero seguir construyendo recuerdos contigo.<br><br>
-                Te quiero muchísimo, Karim. ❤️ Gracias por ser tú, por llegar a mi vida y por hacerme sentir tan especial. No importa qué tan lejos estés, siempre tendrás un lugar en mi corazón. ¡Feliz aniversario, mi amor! ❤️⚓️🌊
+                Te quiero muchísimo, Mi Karin. ❤️ Gracias por ser tú, por llegar a mi vida y por hacerme sentir tan especial. No importa qué tan lejos estés, siempre tendrás un lugar en mi corazón. ¡Feliz aniversario, mi amor! ❤️⚓️🌊
             </p>
             <button class="btnSiguiente" onclick="iniciarMinijuego()">¡Atrapa los Corazones y gana Frases! 🎮</button>
         </div>
 
-        <!-- Cuadro Minijuego Final con Premios de Frases -->
+        <!-- Cuadro Minijuego Final con Premios de Frases (Mejorado) -->
         <div id="contenedorJuego">
             <h2>¡Premios para ti, mi amor! 💖</h2>
             <div id="marcadorPuntos">Atrapa corazones para desbloquear frases: <span id="puntuacion">0</span> / 6</div>
@@ -234,11 +244,11 @@
             <div id="tarjetaPremio">¡Haz clic en un corazón flotante en la pantalla para revelar una frase especial! ❤️</div>
 
             <div id="bloqueFinalCarta" style="display:none; text-align: left; margin-top: 15px; border-top: 1px solid rgba(255,105,180,0.4); padding-top: 14px;">
-                <p style="font-size: 13.5px; line-height: 1.65;">
-                    Y antes de terminar, quiero que recuerdes algo, Karim: no importa qué tan lejos te lleve el mar ni cuántos caminos tengamos que recorrer, siempre habrá una parte de mí esperando por ti. Mientras tú persigues tus sueños y cumples con tu misión, yo también seguiré luchando por los míos, estudiando y construyendo mi futuro en odontología. 🦷❤️<br><br>
+                <p style="font-size: 13.5px; line-height: 1.65; color: #f4f4f4;">
+                    Y antes de terminar, quiero que recuerdes algo, Mi Karin: no importa qué tan lejos te lleve el mar ni cuántos caminos tengamos que recorrer, siempre habrá una parte de mí esperando por ti. Mientras tú persigues tus sueños y cumples con tu misión, yo también seguiré luchando por los míos, estudiando y construyendo mi futuro en odontología. 🦷❤️<br><br>
                     Quizás nuestros días estén llenos de responsabilidades, viajes, estudios y momentos en los que no podamos estar juntos, pero quiero que sigamos encontrando la manera de elegirnos una y otra vez. Porque quiero que cuando mires al futuro, también puedas imaginarme a tu lado.<br><br>
-                    Gracias por ser parte de mi historia, Karim. Espero que este sea solamente uno de los muchos aniversarios que celebraremos juntos. Te amo y siempre voy a desear que regreses con bien a mis brazos.<br><br>
-                    <strong style="color: #ff69b4;">“Tú tienes el mar para navegar y yo tengo mis sueños por cumplir, pero ambos tenemos un mismo lugar al que siempre queremos volver: el uno al otro.” ❤️</strong><br><br>
+                    Gracias por ser parte de mi historia, Mi Karin. Espero que este sea solamente uno de los muchos aniversarios que celebraremos juntos. Te amo y siempre voy a desear que regreses con bien a mis brazos.<br><br>
+                    <strong style="color: #ff94b8;">“Tú tienes el mar para navegar y yo tengo mis sueños por cumplir, pero ambos tenemos un mismo lugar al que siempre queremos volver: el uno al otro.” ❤️</strong><br><br>
                     Con todo mi amor,<br>
                     <span style="font-size: 16px; font-weight: bold; color: #ff94b8;">Camila ❤️⚓️🦷</span>
                 </p>
